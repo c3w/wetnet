@@ -206,9 +206,9 @@ def query_set():
  print "query_set"
  usage(sys.argv)
  sys.argv.pop(0)
- route=sys.argv[0]
+ set=sys.argv[0]
  cursor = db.cursor ()
- Q=str("SELECT `set`, `route`, `subnet_as` FROM `sets` WHERE `route` LIKE '%s'" % route)
+ Q=str("SELECT `set`, `route`, `subnet_as` FROM `sets` WHERE `set` LIKE '%s'" % set)
  cursor.execute (Q)
  row = cursor.fetchone()
  while row is not None:
@@ -218,12 +218,15 @@ def query_set():
 
 def query_route():
  print "query_route"
+ usage(sys.argv)
+ sys.argv.pop(0)
+ route=sys.argv[0]
  cursor = db.cursor ()
- Q=str("SELECT DISTINCT `route` FROM `sets`")
+ Q=str("SELECT `route`, `set` FROM `sets` WHERE `route` LIKE '%s'" % route )
  cursor.execute (Q)
  row = cursor.fetchone()
  while row is not None:
-  print("%s" % (row[0]))
+  print("[%s] %s" % (row[0], row[1]))
   row = cursor.fetchone()
  cursor.close ()
 
@@ -251,7 +254,7 @@ def query_subnet():
  cursor.execute (Q)
  row = cursor.fetchone()
  while row is not None:
-  print("%s - %s" % (row[0], row[1]))
+  print("[%s] %s - %s" % (subnet, row[0], row[1]))
   row = cursor.fetchone()
  cursor.close ()
 

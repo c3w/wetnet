@@ -8,7 +8,7 @@
 
 ## create a bunch of /27s out of a /24, via route sfo01
 ./wetnet create set 10.0.0.0/24 /27 sfo01
-./wetnet query set sfo01
+./wetnet query set 10.0.0.0/24
 ./wetnet query set %
 
 ## provision a subnet to a service/client/whathaveu
@@ -19,6 +19,10 @@
 ## magically provision a subnet on a specified route
 ./wetnet create magic sfo01 /27 skymall
 ./wetnet query identifier skymall
+
+## query routes
+./wetnet query route sfo01
+./wetnet query route %
 
 ## provision a hostname on a subnet
 ./wetnet query subnet 10.0.0.0/27
