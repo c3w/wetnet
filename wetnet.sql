@@ -16,6 +16,23 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `hosts`
+--
+
+DROP TABLE IF EXISTS `hosts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hosts` (
+  `host_id` int(11) NOT NULL AUTO_INCREMENT,
+  `host_ip` varchar(45) DEFAULT NULL,
+  `subnet` varchar(45) DEFAULT NULL,
+  `hostname` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`host_id`),
+  UNIQUE KEY `host_ip_UNIQUE` (`host_ip`)
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `organizations`
 --
 
@@ -28,7 +45,7 @@ CREATE TABLE `organizations` (
   `organization_friendly_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`organization_id`),
   UNIQUE KEY `organization_name_UNIQUE` (`organization_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,7 +80,7 @@ CREATE TABLE `subnets` (
   `identifier` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`subnet_id`),
   UNIQUE KEY `subnet_UNIQUE` (`subnet`)
-) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,4 +108,4 @@ CREATE TABLE `supernets` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-09-29 13:22:12
+-- Dump completed on 2012-09-29 15:04:58

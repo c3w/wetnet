@@ -116,6 +116,10 @@ def create_set():
    print("[INSERT SUBNET from SET %s] %s" % (set, currentSubnet))
    cursor.execute (Q)
    cursor.execute ("commit")
+   for h in range(int(networkArray[3])+1, int(networkArray[3])+stepSize-1):
+    H=str("INSERT into `hosts` (`host_ip`, `subnet`) VALUES ('%s.%s.%s.%s', '%s')" % (networkArray[0], networkArray[1], networkArray[2], h, currentSubnet))
+    cursor.execute (H)
+    cursor.execute ("commit")
    cursor.close ()
   except MySQLdb.IntegrityError:
    print("DUPLICATE SubNET %s - exiting" % currentSubnet)
@@ -161,6 +165,17 @@ def magic_subnet():
 
 def create_host():
  print "create_host"
+ usage(sys.argv)
+ sys.argv.pop(0)
+ hostip=sys.argv[0]
+ usage(sys.argv)
+ hostname=sys.argv[1] 
+ Q=str("UPDATE hosts SET `hostname` = '%s' WHERE `host_ip` LIKE '%s'" % (hostname, hostip))
+ print("[UPDATE HOST %s HOSTNAME %s]" % (hostip, hostname))
+ cursor = db.cursor ()
+ cursor.execute (Q)
+ cursor.execute ("commit")
+ cursor.close ()
 
 def query_organization():
  print "query_organization"
@@ -193,11 +208,11 @@ def query_set():
  sys.argv.pop(0)
  route=sys.argv[0]
  cursor = db.cursor ()
- Q=str("SELECT `set`, `route` FROM `sets` WHERE `route` LIKE '%s'" % route)
+ Q=str("SELECT `set`, `route`, `subnet_as` FROM `sets` WHERE `route` LIKE '%s'" % route)
  cursor.execute (Q)
  row = cursor.fetchone()
  while row is not None:
-  print("%s - %s" % (row[1], row[0]))
+  print("%s - %s subnetted as %ss" % (row[1], row[0], row[2]))
   row = cursor.fetchone()
  cursor.close ()
 
@@ -228,6 +243,17 @@ def query_subnet():
 
 def query_host():
  print "query_host"
+ usage(sys.argv)
+ sys.argv.pop(0)
+ hostname=sys.argv[0]
+ cursor = db.cursor ()
+ Q=str("SELECT `hostname`, `host_ip` FROM `hosts` WHERE `hostname` LIKE '%s'" % hostname)
+ cursor.execute (Q)
+ row = cursor.fetchone()
+ while row is not None:
+  print("%s - %s" % (row[1], row[0]))
+  row = cursor.fetchone()
+ cursor.close ()
 
 def query():
  usage(sys.argv) 

@@ -20,4 +20,8 @@
 ./wetnet create magic sfo01 /27 skymall
 ./wetnet query subnet skymall
 
+## provision a hostname on a subnet
+./wetnet create host 10.0.0.1 gw.sfogate.tld
+./wetnet query host %sfogate%
+
 ## MORE SOON !!! ##
