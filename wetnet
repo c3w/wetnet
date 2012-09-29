@@ -143,10 +143,16 @@ def query_organization():
 
 def query_supernet():
  print "query_supernet"
+ usage(sys.argv)
+ sys.argv.pop(0)
+ organization=sys.argv[0]
  cursor = db.cursor ()
- cursor.execute ("SELECT VERSION()")
- row = cursor.fetchone ()
- print "server version:", row[0]
+ Q=str("SELECT supernet FROM supernets WHERE organization LIKE '%s'" % organization)
+ cursor.execute (Q)
+ row = cursor.fetchone()
+ while row is not None:
+  print("%s - %s" % (organization, row[0]))
+  row = cursor.fetchone()
  cursor.close ()
 
 def query_set():
