@@ -17,8 +17,11 @@
 ./wetnet query identifier %joe%
 
 ## magically provision a subnet on a specified route
-./wetnet create magic sfo01 /27 skymall
+./wetnet magic subnet sfo01 /27 skymall
 ./wetnet query identifier skymall
+
+## magically provision a host on a specified subnet
+./wetnet magic host 10.0.0.0/27 my.webervers.tld
 
 ## query routes
 ./wetnet query route sfo01

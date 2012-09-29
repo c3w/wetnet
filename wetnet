@@ -9,7 +9,7 @@ db=MySQLdb.connect (user="wetnet",
 
 def usage(argv):
  if len(argv) == 1:
-  print 'Usage: wetnet [create|query] [organization|supernet|route|set|subnet|magic|host|ip] [route|orgname|x.x.x.x/x] [/xx] [route]'
+  print 'Usage: wetnet [create|query|magic|clear] [organization|supernet|route|set|subnet|host|ip] [route|orgname|x.x.x.x/x] [/xx] [route]'
   sys.exit(0)
 
 usage(sys.argv)
@@ -164,6 +164,26 @@ def magic_subnet():
  cursor.execute ("commit")
  cursor.close ()
 
+def magic_host():
+ print "magic_host"
+ usage(sys.argv)
+ sys.argv.pop(0)
+ usage(sys.argv)
+ subnet=sys.argv[0]
+ hostname=sys.argv[1]
+ print("subnet is %s and hostname is %s" % (subnet, hostname))
+ H=str("SELECT `host_ip` from hosts where `subnet` LIKE '%s' and `hostname` is NULL" % subnet)
+ cursor = db.cursor ()
+ cursor.execute (H)
+ row = cursor.fetchone()
+ host_ip=row[0]
+ Q=str("UPDATE hosts SET `hostname` = '%s' WHERE `host_ip` LIKE '%s'" % (hostname, host_ip))
+ print("[UPDATE HOSTNAME %s IP %s]" % (hostname, host_ip))
+ cursor = db.cursor ()
+ cursor.execute (Q)
+ cursor.execute ("commit")
+ cursor.close ()
+
 def create_host():
  print "create_host"
  usage(sys.argv)
@@ -310,8 +330,16 @@ def create():
             "supernet" : create_supernet,
             "set" : create_set,
             "subnet" : create_subnet,
-            "magic" : magic_subnet,
             "host" : create_host
+ }
+ options[sys.argv[0]]()
+
+def magic():
+ usage(sys.argv) 
+ sys.argv.pop(0)
+ print "you are casting"
+ options = {"subnet" : magic_subnet,
+            "host" : magic_host
  }
  options[sys.argv[0]]()
 
@@ -325,6 +353,7 @@ def clear():
 
 options = {"query" : query,
            "create" : create,
+           "magic" : magic,
            "clear" : clear
 }
 options[cmd]()
