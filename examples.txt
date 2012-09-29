@@ -13,14 +13,15 @@
 
 ## provision a subnet to a service/client/whathaveu
 ./wetnet create subnet 10.0.0.0/27 farmerjoe
-./wetnet query subnet farmerjoe
-./wetnet query subnet %joe%
+./wetnet query identifier farmerjoe
+./wetnet query identifier %joe%
 
 ## magically provision a subnet on a specified route
 ./wetnet create magic sfo01 /27 skymall
-./wetnet query subnet skymall
+./wetnet query identifier skymall
 
 ## provision a hostname on a subnet
+./wetnet query subnet 10.0.0.0/27
 ./wetnet create host 10.0.0.1 gw.sfogate.tld
 ./wetnet query host %sfogate%
 

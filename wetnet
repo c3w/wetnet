@@ -227,8 +227,8 @@ def query_route():
   row = cursor.fetchone()
  cursor.close ()
 
-def query_subnet():
- print "query_subnet"
+def query_identifier():
+ print "query_identifier"
  usage(sys.argv)
  sys.argv.pop(0)
  identifier=sys.argv[0]
@@ -238,6 +238,20 @@ def query_subnet():
  row = cursor.fetchone()
  while row is not None:
   print("%s - %s" % (row[1], row[0]))
+  row = cursor.fetchone()
+ cursor.close ()
+
+def query_subnet():
+ print "query_subnet"
+ usage(sys.argv)
+ sys.argv.pop(0)
+ subnet=sys.argv[0]
+ cursor = db.cursor ()
+ Q=str("SELECT `host_ip`, `hostname` FROM `hosts` WHERE `subnet` LIKE '%s'" % subnet)
+ cursor.execute (Q)
+ row = cursor.fetchone()
+ while row is not None:
+  print("%s - %s" % (row[0], row[1]))
   row = cursor.fetchone()
  cursor.close ()
 
@@ -264,6 +278,7 @@ def query():
             "set" : query_set,
             "route" : query_route,
             "subnet" : query_subnet,
+            "identifier" : query_identifier,
             "host" : query_host
  }
  options[sys.argv[0]]()
