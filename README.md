@@ -1,10 +1,17 @@
-wetnet v.1
-c3w@juicypop.net
+###
+## wetnet v.1
+## c3w@juicypop.net
 
-wetnet is a supernet-aware subnet/host provisioner that is friendly to routing protocols.
+WetNET is a supernet-aware IPv4 provisioner, written in Python, with a MySQL DB
 
-Got a router in SF, 3rd floor and want to provision a /32 for it?  woot!
+IP Routing protocols aggregate subnets into supernets, and so, WetNET is designed to
+provision subnets and hosts within ranges, allocated to Layer 3 devices.
 
-v.1 is the basic python flow - working for .2 to bring mysql and real math into it
+Usage: wetnet [create|query] [supernet|set|subnet|host] x.x.x.x/x [device] device-id
 
---c3w
+Step one(1) is to create the supernet that your organization owns
+Step two(2) creates 'sets' to be dedicated to subnetting a particular size subnet, e.g. /27s
+Step three(3) outputs a subnet of allowed size, and tags it in the database
+Step four(4) creates a host record in the database, within one of the allocated subnets
+
+--c3w 2012092801
