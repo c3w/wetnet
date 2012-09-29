@@ -164,6 +164,14 @@ def create_host():
 
 def query_organization():
  print "query_organization"
+ cursor = db.cursor ()
+ Q=str("SELECT organization_name FROM organizations")
+ cursor.execute (Q)
+ row = cursor.fetchone()
+ while row is not None:
+  print("%s" % (row[0]))
+  row = cursor.fetchone()
+ cursor.close ()
 
 def query_supernet():
  print "query_supernet"
