@@ -28,7 +28,7 @@ CREATE TABLE `organizations` (
   `organization_friendly_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`organization_id`),
   UNIQUE KEY `organization_name_UNIQUE` (`organization_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +46,7 @@ CREATE TABLE `sets` (
   `route` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`set_id`),
   UNIQUE KEY `set_UNIQUE` (`set`)
-) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=175 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,7 +63,7 @@ CREATE TABLE `subnets` (
   `identifier` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`subnet_id`),
   UNIQUE KEY `subnet_UNIQUE` (`subnet`)
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -79,7 +79,7 @@ CREATE TABLE `supernets` (
   `organization` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`supernet_id`),
   UNIQUE KEY `supernet_UNIQUE` (`supernet`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -91,4 +91,4 @@ CREATE TABLE `supernets` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-09-29 11:56:34
+-- Dump completed on 2012-09-29 13:22:12

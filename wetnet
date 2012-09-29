@@ -134,6 +134,30 @@ def create_subnet():
  cursor.execute ("commit")
  cursor.close ()
 
+def magic_subnet():
+ print "magic_subnet"
+ usage(sys.argv)
+ sys.argv.pop(0)
+ usage(sys.argv)
+ route=sys.argv[0]
+ size=sys.argv[1]
+ sys.argv.pop(0)
+ usage(sys.argv)
+ identifier=sys.argv[1]
+ print("id is %s" % identifier)
+ print("route is %s and size is %s" % (route, size))
+ Q=str("SELECT `sets`.`set`, `subnets`.`subnet` from `sets`, `subnets` WHERE `sets`.`route` LIKE '%s' AND `sets`.`subnet_as` LIKE '%s' AND `sets`.`set` LIKE `subnets`.`set` AND `subnets`.`identifier` is NULL" % (route, size))
+ print Q
+ cursor = db.cursor ()
+ cursor.execute (Q)
+ row = cursor.fetchone()
+ subnet=row[1]
+ Q=str("UPDATE subnets SET `identifier` = '%s' WHERE `subnet` LIKE '%s'" % (identifier, subnet))
+ print("[UPDATE SUBNET %s IDENTIFIER %s]" % (subnet, identifier))
+ cursor = db.cursor ()
+ cursor.execute (Q)
+ cursor.execute ("commit")
+ cursor.close ()
 
 def create_host():
  print "create_host"
@@ -157,9 +181,42 @@ def query_supernet():
 
 def query_set():
  print "query_set"
+ usage(sys.argv)
+ sys.argv.pop(0)
+ route=sys.argv[0]
+ cursor = db.cursor ()
+ Q=str("SELECT `set` FROM `sets` WHERE `route` LIKE '%s'" % route)
+ cursor.execute (Q)
+ row = cursor.fetchone()
+ while row is not None:
+  print("%s - %s" % (route, row[0]))
+  row = cursor.fetchone()
+ cursor.close ()
+
+def query_route():
+ print "query_route"
+ cursor = db.cursor ()
+ Q=str("SELECT DISTINCT `route` FROM `sets`")
+ cursor.execute (Q)
+ row = cursor.fetchone()
+ while row is not None:
+  print("%s" % (row[0]))
+  row = cursor.fetchone()
+ cursor.close ()
 
 def query_subnet():
  print "query_subnet"
+ usage(sys.argv)
+ sys.argv.pop(0)
+ identifier=sys.argv[0]
+ cursor = db.cursor ()
+ Q=str("SELECT `subnet`, `identifier` FROM `subnets` WHERE `identifier` LIKE '%%%s%%'" % identifier)
+ cursor.execute (Q)
+ row = cursor.fetchone()
+ while row is not None:
+  print("%s - %s" % (row[1], row[0]))
+  row = cursor.fetchone()
+ cursor.close ()
 
 def query_host():
  print "query_host"
@@ -171,6 +228,7 @@ def query():
  options = {"organization" : query_organization,
             "supernet" : query_supernet,
             "set" : query_set,
+            "route" : query_route,
             "subnet" : query_subnet,
             "host" : query_host
  }
@@ -184,6 +242,7 @@ def create():
             "supernet" : create_supernet,
             "set" : create_set,
             "subnet" : create_subnet,
+            "magic" : magic_subnet,
             "host" : create_host
  }
  options[sys.argv[0]]()
