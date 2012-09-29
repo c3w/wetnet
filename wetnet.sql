@@ -30,6 +30,36 @@ CREATE TABLE `organizations` (
   UNIQUE KEY `organization_name_UNIQUE` (`organization_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sets`
+--
+
+DROP TABLE IF EXISTS `sets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sets` (
+  `set_id` int(11) NOT NULL AUTO_INCREMENT,
+  `set` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`set_id`),
+  UNIQUE KEY `set_UNIQUE` (`set`)
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `supernets`
+--
+
+DROP TABLE IF EXISTS `supernets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `supernets` (
+  `supernet_id` int(11) NOT NULL AUTO_INCREMENT,
+  `supernet` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`supernet_id`),
+  UNIQUE KEY `supernet_UNIQUE` (`supernet`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -40,4 +70,4 @@ CREATE TABLE `organizations` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-09-28 19:13:50
+-- Dump completed on 2012-09-29 10:34:28
