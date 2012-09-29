@@ -18,6 +18,17 @@ cmd=str(sys.argv[0])
 
 def create_organization():
  print "create_organization"
+ usage(sys.argv)
+ sys.argv.pop(0)
+ org=str(sys.argv[0])
+ key=raw_input("Create Organization " + org + "? [Y/n]")
+ if key == "Y":
+  print "YES!"
+  cursor = db.cursor ()
+  Q="INSERT into organizations (organization_name) VALUES ('" + org + "');"
+  cursor.execute (Q)
+  cursor.execute ("commit")
+  cursor.close ()
 
 def create_supernet():
  print "create_supernet"
