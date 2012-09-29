@@ -1,0 +1,7 @@
+###
+## wetnet coding style
+## c3w@juicypop.net
+
+. try to catch exceptions, i.e. missing command line arguments
+. try to be helpful in context with errors
+. do it the pythonian way whenever possible, i.e built in dictionaries..
