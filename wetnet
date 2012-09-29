@@ -9,7 +9,7 @@ db=MySQLdb.connect (user="wetnet",
 
 def usage(argv):
  if len(argv) == 1:
-  print 'Usage: wetnet [create|query] [organization|supernet|route|set|subnet|magic|host] [route|orgname|x.x.x.x/x] [/xx] [route]'
+  print 'Usage: wetnet [create|query] [organization|supernet|route|set|subnet|magic|host|ip] [route|orgname|x.x.x.x/x] [/xx] [route]'
   sys.exit(0)
 
 usage(sys.argv)
@@ -42,6 +42,7 @@ def create_supernet():
   cidr = iplib.CIDR(supernet)
  except ValueError:
   sys.stderr.write('%s: invalid CIDR address.\n' % supernet)
+  sys.exit(3)
  try:
   cursor = db.cursor ()
   Q="INSERT into supernets (supernet, organization) VALUES ('" + supernet+ "','" + organization + "');"
@@ -250,11 +251,11 @@ def query_subnet():
  sys.argv.pop(0)
  subnet=sys.argv[0]
  cursor = db.cursor ()
- Q=str("SELECT `host_ip`, `hostname` FROM `hosts` WHERE `subnet` LIKE '%s'" % subnet)
+ Q=str("SELECT `host_ip`, `hostname`, `subnet` FROM `hosts` WHERE `subnet` LIKE '%s'" % subnet)
  cursor.execute (Q)
  row = cursor.fetchone()
  while row is not None:
-  print("[%s] %s - %s" % (subnet, row[0], row[1]))
+  print("[%s] %s - %s" % (row[2], row[0], row[1]))
   row = cursor.fetchone()
  cursor.close ()
 
@@ -271,6 +272,21 @@ def query_host():
   print("%s - %s" % (row[1], row[0]))
   row = cursor.fetchone()
  cursor.close ()
+
+def clear_ip():
+ print "clear_ip"
+ usage(sys.argv)
+ sys.argv.pop(0)
+ hostip=sys.argv[0]
+ cursor = db.cursor ()
+ Q=str("SELECT `hostname` from `hosts` WHERE `host_ip` LIKE '%s'" % hostip)
+ H=str("UPDATE `hosts` SET hostname=NULL WHERE `host_ip` LIKE '%s'" % hostip) 
+ cursor.execute (Q)
+ row = cursor.fetchone()
+ cursor.execute(H)
+ cursor.execute ("commit")
+ cursor.close ()
+ print("[CLEAR] %s %s" % (row[0], hostip))
 
 def query():
  usage(sys.argv) 
@@ -299,8 +315,17 @@ def create():
  }
  options[sys.argv[0]]()
 
+def clear():
+ usage(sys.argv) 
+ sys.argv.pop(0)
+ print "you are clearing"
+ options = {"ip" : clear_ip
+ }
+ options[sys.argv[0]]()
+
 options = {"query" : query,
-           "create" : create
+           "create" : create,
+           "clear" : clear
 }
 options[cmd]()
 

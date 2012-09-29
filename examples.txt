@@ -29,4 +29,7 @@
 ./wetnet create host 10.0.0.1 gw.sfogate.tld
 ./wetnet query host %sfogate%
 
+## clear an IP
+./wetnet clear ip 10.0.0.1
+
 ## MORE SOON !!! ##
