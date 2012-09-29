@@ -9,7 +9,7 @@ db=MySQLdb.connect (user="wetnet",
 
 def usage(argv):
  if len(argv) == 1:
-  print 'Usage: wetnet [create|query] [organization|supernet|route|set|subnet|host] [route|orgname|x.x.x.x/x] [/xx] [route]'
+  print 'Usage: wetnet [create|query] [organization|supernet|route|set|subnet|magic|host] [route|orgname|x.x.x.x/x] [/xx] [route]'
   sys.exit(0)
 
 usage(sys.argv)
@@ -179,11 +179,11 @@ def query_supernet():
  sys.argv.pop(0)
  organization=sys.argv[0]
  cursor = db.cursor ()
- Q=str("SELECT supernet FROM supernets WHERE organization LIKE '%s'" % organization)
+ Q=str("SELECT supernet, organization FROM supernets WHERE organization LIKE '%s'" % organization)
  cursor.execute (Q)
  row = cursor.fetchone()
  while row is not None:
-  print("%s - %s" % (organization, row[0]))
+  print("%s - %s" % (row[0], row[1]))
   row = cursor.fetchone()
  cursor.close ()
 
@@ -193,11 +193,11 @@ def query_set():
  sys.argv.pop(0)
  route=sys.argv[0]
  cursor = db.cursor ()
- Q=str("SELECT `set` FROM `sets` WHERE `route` LIKE '%s'" % route)
+ Q=str("SELECT `set`, `route` FROM `sets` WHERE `route` LIKE '%s'" % route)
  cursor.execute (Q)
  row = cursor.fetchone()
  while row is not None:
-  print("%s - %s" % (route, row[0]))
+  print("%s - %s" % (row[1], row[0]))
   row = cursor.fetchone()
  cursor.close ()
 
@@ -218,7 +218,7 @@ def query_subnet():
  sys.argv.pop(0)
  identifier=sys.argv[0]
  cursor = db.cursor ()
- Q=str("SELECT `subnet`, `identifier` FROM `subnets` WHERE `identifier` LIKE '%%%s%%'" % identifier)
+ Q=str("SELECT `subnet`, `identifier` FROM `subnets` WHERE `identifier` LIKE '%s'" % identifier)
  cursor.execute (Q)
  row = cursor.fetchone()
  while row is not None:

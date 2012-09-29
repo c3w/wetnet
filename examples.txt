@@ -1,0 +1,23 @@
+
+./wetnet create organization cisco
+./wetnet query organization
+
+./wetnet create supernet 10.0.0.0/19 cisco
+./wetnet query supernet cisco
+./wetnet query supernet %
+
+## create a bunch of /27s out of a /24, via route sfo01
+./wetnet create set 10.0.0.0/24 /27 sfo01
+./wetnet query set sfo01
+./wetnet query set %
+
+## provision a subnet to a service/client/whathaveu
+./wetnet create subnet 10.0.0.0/27 farmerjoe
+./wetnet query subnet farmerjoe
+./wetnet query subnet %joe%
+
+## magically provision a subnet on a specified route
+./wetnet create magic sfo01 /27 skymall
+./wetnet query subnet skymall
+
+## MORE SOON !!! ##
