@@ -28,7 +28,7 @@ CREATE TABLE `organizations` (
   `organization_friendly_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`organization_id`),
   UNIQUE KEY `organization_name_UNIQUE` (`organization_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,9 +41,29 @@ DROP TABLE IF EXISTS `sets`;
 CREATE TABLE `sets` (
   `set_id` int(11) NOT NULL AUTO_INCREMENT,
   `set` varchar(45) DEFAULT NULL,
+  `supernet` varchar(45) DEFAULT NULL,
+  `subnet_as` varchar(45) DEFAULT NULL,
+  `route` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`set_id`),
   UNIQUE KEY `set_UNIQUE` (`set`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `subnets`
+--
+
+DROP TABLE IF EXISTS `subnets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `subnets` (
+  `subnet_id` int(11) NOT NULL AUTO_INCREMENT,
+  `subnet` varchar(45) DEFAULT NULL,
+  `set` varchar(45) DEFAULT NULL,
+  `identifier` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`subnet_id`),
+  UNIQUE KEY `subnet_UNIQUE` (`subnet`)
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -56,9 +76,10 @@ DROP TABLE IF EXISTS `supernets`;
 CREATE TABLE `supernets` (
   `supernet_id` int(11) NOT NULL AUTO_INCREMENT,
   `supernet` varchar(45) DEFAULT NULL,
+  `organization` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`supernet_id`),
   UNIQUE KEY `supernet_UNIQUE` (`supernet`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -70,4 +91,4 @@ CREATE TABLE `supernets` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-09-29 10:34:28
+-- Dump completed on 2012-09-29 11:56:34

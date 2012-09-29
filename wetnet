@@ -9,7 +9,7 @@ db=MySQLdb.connect (user="wetnet",
 
 def usage(argv):
  if len(argv) == 1:
-  print 'Usage: wetnet [create|query] [organization|supernet|set|subnet|host] [orgname|x.x.x.x/x] [device] device-id'
+  print 'Usage: wetnet [create|query] [organization|supernet|route|set|subnet|host] [route|orgname|x.x.x.x/x] [/xx] [route]'
   sys.exit(0)
 
 usage(sys.argv)
@@ -35,15 +35,16 @@ def create_supernet():
  usage(sys.argv)
  sys.argv.pop(0)
  supernet=str(sys.argv[0])
- print "supernet is " + supernet
+ usage(sys.argv)
+ organization=str(sys.argv[1])
+ print("supernet is %s and org is %s" % (supernet, organization))
  try:
   cidr = iplib.CIDR(supernet)
  except ValueError:
   sys.stderr.write('%s: invalid CIDR address.\n' % supernet)
-  sys.exit(3)
  try:
   cursor = db.cursor ()
-  Q="INSERT into supernets (supernet) VALUES ('" + supernet+ "');"
+  Q="INSERT into supernets (supernet, organization) VALUES ('" + supernet+ "','" + organization + "');"
   print("[INSERT SUPERNET] %s" % supernet)
   cursor.execute (Q)
   cursor.execute ("commit")
@@ -67,8 +68,8 @@ def create_supernet():
  for d in range(int(networkArray[2]), int(broadcastArray[2])+1):
   set=str("%s.%s.%s.0/24" % (networkArray[0], networkArray[1], str(d)))
   cursor = db.cursor ()
-  Q="INSERT into `sets` (`set`) VALUES ('" + set + "');"
-  print("[INSERT SET] %s" % set)
+  Q="INSERT into `sets` (`set`, `supernet`) VALUES ('" + set + "','" + supernet + "');"
+  print("[INSERT SET from SUPERNET %s] %s" % (supernet, set))
   try:
    cursor.execute (Q)
    cursor.execute ("commit")
@@ -80,9 +81,59 @@ def create_supernet():
 
 def create_set():
  print "create_set"
+ usage(sys.argv)
+ sys.argv.pop(0)
+ usage(sys.argv)
+ set=str(sys.argv[0])
+ sub=str(sys.argv[1])
+ sys.argv.pop(0)
+ usage(sys.argv)
+ route=str(sys.argv[1])
+ print("set is %s and sub is %s and route is %s" % (set, sub, route))
+ try:
+  cidr = iplib.CIDR(set)
+ except ValueError:
+  sys.stderr.write('%s: invalid CIDR address.\n' % set)
+  sys.exit(3)
+ networkArray = str.split(str(cidr.network_ip),'.')
+ subArray = str.split(sub, '/')
+ stepSize = 2**(32-int(subArray[1]))
+ try:
+  cursor = db.cursor ()
+  Q=str("UPDATE `sets` SET `subnet_as` = '%s', `route`='%s' WHERE `set` LIKE '%s/24'" % (sub, route, str(cidr.network_ip)))
+  print Q
+  print("[MODIFY SET] %s subnet as %s routed via %s" % (set, sub, route))
+  cursor.execute (Q)
+  cursor.execute ("commit")
+  cursor.close ()
+ except MySQLdb.IntegrityError:
+  print("DUPLICATE SuperNet %s - exiting" % supernet)
+ for i in range(int(networkArray[3]), 256, stepSize):
+  currentSubnet = str("%s.%s.%s.%s/%s" % (networkArray[0],networkArray[1],networkArray[2],i,subArray[1]))
+  try:
+   cursor = db.cursor ()
+   Q="INSERT into `subnets` (`subnet`, `set`) VALUES ('" + currentSubnet + "','" + set + "');"
+   print("[INSERT SUBNET from SET %s] %s" % (set, currentSubnet))
+   cursor.execute (Q)
+   cursor.execute ("commit")
+   cursor.close ()
+  except MySQLdb.IntegrityError:
+   print("DUPLICATE SubNET %s - exiting" % currentSubnet)
 
 def create_subnet():
  print "create_subnet"
+ usage(sys.argv)
+ sys.argv.pop(0)
+ subnet=sys.argv[0]
+ usage(sys.argv)
+ identifier=sys.argv[1] 
+ Q=str("UPDATE subnets SET `identifier` = '%s' WHERE `subnet` LIKE '%s'" % (identifier, subnet))
+ print("[UPDATE SUBNET %s IDENTIFIER %s]" % (subnet, identifier))
+ cursor = db.cursor ()
+ cursor.execute (Q)
+ cursor.execute ("commit")
+ cursor.close ()
+
 
 def create_host():
  print "create_host"
