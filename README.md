@@ -2,6 +2,8 @@
 ## wetnet v.1
 ## c3w@juicypop.net
 
+## VIDEO @ http://www.youtube.com/watch?v=_Bw3m5Xogkw&feature=youtube_gdata_player
+
 WetNET is a supernet-aware IPv4 provisioner, written in Python, with a MySQL DB
 
 IP Routing protocols aggregate subnets into supernets, and so, WetNET is designed to
